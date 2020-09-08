@@ -27,9 +27,9 @@ OMEGA_LMO = 20
 I_LMO = 30
 THETA_LMO_T0 = 60
 
-omega_GMO = 0
-i_GMO = 0
-theta_GMO_T0 = 250
+OMEGA_GMO = 0
+I_GMO = 0
+THETA_GMO_T0 = 250
 
 ### Nano-sat
 sigma_BN_T0 = np.array([0.3, -0.4, 0.5]).T  # Initial MRP
@@ -42,9 +42,10 @@ I_nano = np.array([10, 5, 7.5]) * np.eye(3)  # kg . m^2
 
 #### FUNCTIONS ####
 
-def EAtoDCM313(t):
+def EAtoDCM313(t, radian=False):
     """Insert 3-1-3 Euler angles in degrees and returns equivalent DCM"""
-    t = np.deg2rad(t)
+    if not radian:
+        t = np.deg2rad(t)
     
     a11 = cos(t[2])*cos(t[0]) - sin(t[2])*cos(t[1])*sin(t[0])
     a12 = cos(t[2])*sin(t[0]) + sin(t[2])*cos(t[1])*cos(t[0])
@@ -63,26 +64,27 @@ def EAtoDCM313(t):
     return DCM 
 
 
-def DCMtoEA313(DCM, rad=False):
+def DCMtoEA313(DCM, radian=False):
     """Insert DCM and returns Euler Angles. 
-        rad=True, returns radians.
-        rad=False, returns degrees"""
+        radian=True, returns radians.
+        radian=False, returns degrees"""
     t1 = arctan(DCM[2][0]/(-DCM[2][1]))
     t2 = arccos(DCM[2][2])
     t3 = arctan(DCM[0][2]/DCM[1][2])
 
     EA = np.array([t1, t2, t3])
 
-    if rad:
+    if radian:
         return EA
     else:
         return np.rad2deg(EA)
 
 
-def EArate313(t, w):
+def EArate313(t, w, radian_in=False, radian_out=False):
     """Calculation of 3-1-3 Euler Angle Rates in a given instant.
-        Angular velocities should be already in rad/sec"""
-    t = np.deg2rad(t)
+        Angular velocities should be inputed in rad/sec."""
+    if not radian_in:
+        t = np.deg2rad(t)
 
     a11 = sin(t[2])
     a12 = cos(t[2])
@@ -99,5 +101,8 @@ def EArate313(t, w):
                   [a31, a32, a33]])
     
     rate = (1/sin(t[1])) * np.matmul(B, w.T)
-    
-    return rate
+
+    if radian_out:
+        return rate
+    else:
+        return np.rad2deg(rate)
