@@ -1,9 +1,13 @@
 #  Attitude Dynamics and Control of a Nano-Satellite Orbiting Mars
 
-Capstone project for the Spacecraft Dynamics and Control specialization by University of Colorado Boulder at Coursera. 
+## About
+
+[Capstone project](DynamicsCapstone-v3.pdf) for the Spacecraft Dynamics and Control specialization by University of Colorado Boulder at Coursera. 
 Link to the course [here](https://www.coursera.org/specializations/spacecraft-dynamics-control).
 
-All made with Python.
+Also used as opportunity to practice Python scientific programming.
 
 
-1. [Project overviews and tasks](DynamicsCapstone-v3.pdf)
+## Contents
+
+1. [Task 1: Orbit Simulation](01mission.py)
