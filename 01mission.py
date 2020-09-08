@@ -3,18 +3,18 @@ from toolbox import *
 
 ########################## Task 1 ##########################
 
+# For a circular orbit, R_DOT = R . THETA_DOT (i_hat_theta)
+
 #### LMO ####
 
 # Initial LMO orbit position
 LMO_EA_T0 = np.array([OMEGA_LMO, I_LMO, THETA_LMO_T0])
 LMO_EA_RATE = np.array([0, 0, THETA_DOT_LMO]) # Constant velocity, in rad
 LMO_R = np.array([R_LMO, 0, 0]).T  # Constant position vector
-# For a circular orbit, r_dot = r . theta_dot (i_hat_theta)
 R_DOT_NANO = np.array([0, R_LMO * THETA_DOT_LMO, 0]) # Velocity in km/s
 
 # Equivalent to h_hat = HN * n_hat
 matrix_HN_LMO = EAtoDCM313(LMO_EA_T0)
-
 # Mapping inverse - n_hat = NH * h_hat -> to find r_inertial 
 matrix_NH_LMO = matrix_HN_LMO.T
 r_inertial_LMO_T0 = np.matmul(matrix_NH_LMO, LMO_R)
@@ -33,7 +33,7 @@ for t in range(451):
 
 ## Find LMO r and v at 450s
 
-matrix_HN_LMO_450 = EAtoDCM313(EA_LMO_history[450])
+matrix_HN_LMO_450 = EAtoDCM313(EA_LMO_history[449])
 matrix_NH_LMO_450 = matrix_HN_LMO_450.T
 r_inertial_LMO_450 = np.matmul(matrix_NH_LMO_450, LMO_R.T)
 v_inertial_LMO_450 = np.matmul(matrix_NH_LMO_450, R_DOT_NANO.T)
@@ -64,14 +64,14 @@ y0 = GMO_EA_T0
 step = 1
 
 for t in range(1151):
-    y = y0 + step * np.deg2rad(GMO_EA_RATE)
+    y = y0 + step * np.rad2deg(GMO_EA_RATE)
     EA_GMO_history.append(y)
     y0 = y
 
 
 ## Find GMO r and v at 1150s
 
-matrix_HN_GMO_1150 = EAtoDCM313(EA_GMO_history[1150])
+matrix_HN_GMO_1150 = EAtoDCM313(EA_GMO_history[1149])
 matrix_NH_GMO_1150 = matrix_HN_GMO_1150.T
 r_inertial_GMO_1150 = np.matmul(matrix_NH_GMO_1150, GMO_R.T)
 v_inertial_GMO_1150 = np.matmul(matrix_NH_GMO_1150, R_DOT_MOTHER.T)

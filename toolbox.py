@@ -1,6 +1,5 @@
 import numpy as np
 from numpy import sin, cos, arctan, arccos
-from scipy.spatial.transform import Rotation
 
 #### Mission description ####
 
