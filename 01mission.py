@@ -7,7 +7,6 @@ Task 1 - Orbit simulation
 Find inertial position and velocity for LMO at 450s and GMO at 1150s
 
 # For a circular orbit, R_DOT = R . THETA_DOT (i_hat_theta)
-
 """
 
 #### LMO ####

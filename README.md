@@ -5,9 +5,10 @@
 [Capstone project](DynamicsCapstone-v3.pdf) for the Spacecraft Dynamics and Control specialization by University of Colorado Boulder at Coursera. 
 Link to the course [here](https://www.coursera.org/specializations/spacecraft-dynamics-control).
 
-Also used as opportunity to practice Python scientific programming.
+Also used as opportunity to practice scientific programming in Python.
 
 
 ## Contents
 
-1. [Task 1: Orbit Simulation](01mission.py)
+1. [Orbit Simulation](01mission.py)
+2. [Orbit Frame Orientation](01mission.py)
