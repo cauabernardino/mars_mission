@@ -1,7 +1,10 @@
 import numpy as np
 from numpy import sin, cos, arctan, arccos
 
-#### Mission description ####
+"""
+Mission scenario and constants
+
+"""
 
 ### Mars
 # Mars rotational period is 1 day and 37 minutes
@@ -18,8 +21,7 @@ R_LMO = R_MARS + h # km - Orbit radius
 R_GMO = 20424.2 # km - Orbit radius
 THETA_DOT_GMO = 0.0000709003 # rad/sec - Constant orbit rate
 
-
-#### Initial conditions ####
+##### Initial conditions #####
 
 ### Orbits
 OMEGA_LMO = 20
@@ -38,8 +40,10 @@ omega_BN_T0 = np.deg2rad([1.00, 1.75, -2.20]) # rad/s - Initial body angular vel
 I_nano = np.array([10, 5, 7.5]) * np.eye(3)  # kg . m^2
 
 
+"""
+AUXILIARY FUNCTIONS
 
-#### FUNCTIONS ####
+"""
 
 def EAtoDCM313(t, radian=False):
     """Insert 3-1-3 Euler angles in degrees and returns equivalent DCM"""
@@ -64,9 +68,11 @@ def EAtoDCM313(t, radian=False):
 
 
 def DCMtoEA313(DCM, radian=False):
-    """Insert DCM and returns Euler Angles. 
-        radian=True, returns radians.
-        radian=False, returns degrees"""
+    """
+    Insert DCM and returns Euler Angles.
+
+    radian: True, returns radians. False, returns degrees
+    """
     t1 = arctan(DCM[2][0]/(-DCM[2][1]))
     t2 = arccos(DCM[2][2])
     t3 = arctan(DCM[0][2]/DCM[1][2])
@@ -80,8 +86,14 @@ def DCMtoEA313(DCM, radian=False):
 
 
 def EArate313(t, w, radian_in=False, radian_out=False):
-    """Calculation of 3-1-3 Euler Angle Rates in a given instant.
-        Angular velocities should be inputed in rad/sec."""
+    """
+    Calculation of 3-1-3 Euler Angle Rates in a given instant.
+    Angular velocities should be inserted in rad/sec.
+
+    radian_in: True if Euler Angles vector are in radian, else false.
+    
+    radian_out: True if it is desired that the function returns the rates in radians, else false.   
+    """
     if not radian_in:
         t = np.deg2rad(t)
 

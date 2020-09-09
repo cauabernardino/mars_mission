@@ -1,9 +1,14 @@
 import numpy as np
 from toolbox import *
 
-########################## Task 1 ##########################
+"""
+Task 1 - Orbit simulation
+
+Find inertial position and velocity for LMO at 450s and GMO at 1150s
 
 # For a circular orbit, R_DOT = R . THETA_DOT (i_hat_theta)
+
+"""
 
 #### LMO ####
 
@@ -26,7 +31,7 @@ EA_LMO_history = []
 x0 = LMO_EA_T0
 step = 1
 
-for t in range(451):
+for t in range(450):
     x = x0 + step * EArate313(x0, LMO_EA_RATE) 
     EA_LMO_history.append(x)
     x0 = x
@@ -40,7 +45,6 @@ v_inertial_LMO_450 = np.matmul(matrix_NH_LMO_450, R_DOT_NANO.T)
 
 print(f"rLMO at 450s is: {r_inertial_LMO_450}")
 print(f"vLMO at 450s is: {v_inertial_LMO_450}")
-
 
 
 #### GMO ####
@@ -63,7 +67,7 @@ EA_GMO_history = []
 y0 = GMO_EA_T0
 step = 1
 
-for t in range(1151):
+for t in range(1150):
     y = y0 + step * np.rad2deg(GMO_EA_RATE)
     EA_GMO_history.append(y)
     y0 = y
@@ -78,3 +82,14 @@ v_inertial_GMO_1150 = np.matmul(matrix_NH_GMO_1150, R_DOT_MOTHER.T)
 
 print(f"rGMO at 1150s is: {r_inertial_GMO_1150}")
 print(f"vGMO at 1150s is: {v_inertial_GMO_1150}")
+
+
+"""
+Task 2 - Orbit Frame Orientation
+
+Find the LMO DCM [HN] at 300s
+"""
+
+matrix_HN_LMO_300 = EAtoDCM313(EA_LMO_history[299])
+
+print(f"The matrix HN at 300s is:\n{matrix_HN_LMO_300}")
