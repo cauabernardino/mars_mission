@@ -12,3 +12,4 @@ Also used as opportunity to practice scientific programming in Python.
 
 1. [Orbit Simulation](01mission.py)
 2. [Orbit Frame Orientation](01mission.py)
+3. [Sun-Pointing Reference Frame Orientation](02mission.py)

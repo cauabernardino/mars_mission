@@ -21,6 +21,13 @@ R_LMO = R_MARS + h # km - Orbit radius
 R_GMO = 20424.2 # km - Orbit radius
 THETA_DOT_GMO = 0.0000709003 # rad/sec - Constant orbit rate
 
+### Sun Reference Frame
+OMEGA_SUN = 180 # Rotation in 3rd frame
+I_SUN = 90 # Rotation in 1st frame
+
+### Nadir-Pointing Reference Frame
+
+
 ##### Initial conditions #####
 
 ### Orbits
