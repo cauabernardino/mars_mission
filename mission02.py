@@ -25,22 +25,10 @@ Determine an analytic expression for the nadir pointing reference frame Rn by de
 matrix_RnH = np.round(EAtoDCM313(NADIR_FRAME), 6)
 
 ## Matrix HN
-# Initialization of LMO Euler Angles variation
-EA_LMO_history = []
-
-# LMO integration
-x0 = LMO_EA_T0
-step = 1
-time = 330
-
-for t in range(time):
-    x = x0 + step * EArate313(x0, LMO_EA_RATE) 
-    EA_LMO_history.append(x)
-    x0 = x
 
 ## Find HN at 330s
 
-matrix_HN = EAtoDCM313(EA_LMO_history[time - 1])
+matrix_HN = orbit_integrator('LMO', 330, 1)
 
 ## Matrix RnN at 330s
 matrix_RnN = np.round(np.matmul(matrix_RnH, matrix_HN), 6)

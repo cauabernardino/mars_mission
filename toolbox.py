@@ -179,6 +179,7 @@ def orbit_integrator(orbit, time, step=1):
     else:
         return False
 
-    matrix = EAtoDCM313(history[time -1])
+    moment = time / step
+    matrix = EAtoDCM313(history[moment - 1])
 
     return matrix
