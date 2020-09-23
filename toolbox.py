@@ -5,7 +5,6 @@ from numpy import sin, cos, arctan, arccos
 Mission scenario and constants
 
 """
-
 ### Mars
 # Mars rotational period is 1 day and 37 minutes
 R_MARS = 3396.19 # km - Radius
@@ -21,25 +20,54 @@ R_LMO = R_MARS + h # km - Orbit radius
 R_GMO = 20424.2 # km - Orbit radius
 THETA_DOT_GMO = 0.0000709003 # rad/sec - Constant orbit rate
 
-### Sun Reference Frame
-OMEGA_SUN = 180 # Rotation in 3rd frame
-I_SUN = 90 # Rotation in 1st frame
 
-### Nadir-Pointing Reference Frame
+"""
+Initial conditions - Orbits and Frames
 
-
-##### Initial conditions #####
-
-### Orbits
+"""
+#### LMO ####
 OMEGA_LMO = 20
 I_LMO = 30
 THETA_LMO_T0 = 60
 
+# Initial LMO orbit position
+LMO_EA_T0 = np.array([OMEGA_LMO, I_LMO, THETA_LMO_T0]) # Initial Euler Angles in degrees
+LMO_EA_RATE = np.array([0, 0, THETA_DOT_LMO]) # Constant velocity, in rad
+LMO_R = np.array([R_LMO, 0, 0]).T  # Constant position vector
+R_DOT_NANO = np.array([0, R_LMO * THETA_DOT_LMO, 0]) # Velocity in km/s
+
+#### GMO ####
 OMEGA_GMO = 0
 I_GMO = 0
 THETA_GMO_T0 = 250
 
-### Nano-sat
+# Initial GMO orbit position
+GMO_EA_T0 = np.array([OMEGA_GMO, I_GMO, THETA_GMO_T0])  # Initial Euler Angles in degrees
+GMO_EA_RATE = np.array([0, 0, THETA_DOT_GMO]) # Constant velocity, in rad
+GMO_R = np.array([R_GMO, 0, 0]) # Constant position vector
+R_DOT_MOTHER = np.array([0, R_GMO * THETA_DOT_GMO, 0])  # Velocity in km/s
+
+#### Sun Reference Frame ####
+OMEGA_SUN = 180 # Rotation in 3rd frame
+I_SUN = 90 # Rotation in 1st frame
+
+
+#### Nadir-Pointing Reference Frame ####
+
+## Nadir to Hill frame
+
+OMEGA_NADIR = 180
+I_NADIR = 180
+THETA_NADIR = 0
+
+NADIR_FRAME = np.array([OMEGA_NADIR, I_NADIR, THETA_NADIR]) # Initial Euler Angles in degrees
+#  Nadir frame position
+R_DOT_NADIR = -R_DOT_NANO
+
+"""
+Initial conditions - Nano-sat
+
+"""
 sigma_BN_T0 = np.array([0.3, -0.4, 0.5]).T  # Initial MRP
 omega_BN_T0 = np.deg2rad([1.00, 1.75, -2.20]) # rad/s - Initial body angular velocity
 
@@ -124,3 +152,33 @@ def EArate313(t, w, radian_in=False, radian_out=False):
         return rate
     else:
         return np.rad2deg(rate)
+
+
+def orbit_integrator(orbit, time, step=1):
+    """"
+    Integrator for LMO and GMO orbits. The parameter orbit can only be 'LMO' or 'GMO'.
+    Input time and step in seconds.
+    """
+    history = []
+
+    if orbit == 'LMO':
+        x0 = LMO_EA_T0
+
+        for t in range(time):
+            x = x0 + step * EArate313(x0, LMO_EA_RATE) 
+            history.append(x)
+            x0 = x
+
+    elif orbit == 'GMO':
+        y0 = GMO_EA_T0
+
+        for t in range(time):
+            y = y0 + step * np.rad2deg(GMO_EA_RATE)
+            history.append(y)
+            y0 = y
+    else:
+        return False
+
+    matrix = EAtoDCM313(history[time -1])
+
+    return matrix
