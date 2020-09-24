@@ -51,6 +51,7 @@ R_DOT_MOTHER = np.array([0, R_GMO * THETA_DOT_GMO, 0])  # Velocity in km/s
 OMEGA_SUN = 180 # Rotation in 3rd frame
 I_SUN = 90 # Rotation in 1st frame
 
+SUN_FRAME = np.array([OMEGA_SUN, I_SUN, 0])
 
 #### Nadir-Pointing Reference Frame ####
 
@@ -62,7 +63,7 @@ THETA_NADIR = 0
 
 NADIR_FRAME = np.array([OMEGA_NADIR, I_NADIR, THETA_NADIR]) # Initial Euler Angles in degrees
 #  Nadir frame position
-R_DOT_NADIR = -R_DOT_NANO
+w_NADIR = np.array([0, 0, THETA_DOT_LMO]) # rad/sec
 
 """
 Initial conditions - Nano-sat
@@ -179,7 +180,7 @@ def orbit_integrator(orbit, time, step=1):
     else:
         return False
 
-    moment = time / step
+    moment = time // step
     matrix = EAtoDCM313(history[moment - 1])
 
     return matrix
